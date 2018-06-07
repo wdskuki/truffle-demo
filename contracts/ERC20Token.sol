@@ -46,16 +46,10 @@ contract ERC20Token{
 
   // msg.sender调用transfer函数将自己的token转账给_to地址，_value为转账个数
   function transfer(address _to, uint256 _value) returns (bool){
-    if(_to == address(this)){ 
-      //EOA => CA
-      return _buy();
-    }else{
-      //EOA => EOA
       _transfer(msg.sender, _to, _value);
-    }
   }
 
-  function _transfer(address _from, address _to, uint _value) internal {
+  function _transfer(address _from, address _to, uint _value) {
     require(_to != 0x0);
     require(accounts[_from] >= _value);
     require(accounts[_to] + _value > accounts[_to]);
@@ -68,9 +62,9 @@ contract ERC20Token{
 
   //购买tokens
   function _buy() payable returns(bool){
-    uint amount = msg.value / buyPrice;
+    // uint amount = msg.value;
     _owner.send(msg.value); 
-    _transfer(_owner, msg.sender, amount);
+    _transfer(_owner, msg.sender, msg.value);
     return true;
   }
 }
