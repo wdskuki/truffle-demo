@@ -18,7 +18,7 @@ contract ERC20Token2{
   constructor(uint256 totalSupply, string name, string symbol){
     _totalSupply = totalSupply;
     _owner = msg.sender;
-    accounts[_owner] = _totalSupply;
+    accounts[address(this)] = _totalSupply;
     _name = name;
     _symbol = symbol;
   }
@@ -63,20 +63,31 @@ contract ERC20Token2{
   //购买tokens
   function buy() payable returns(bool){
     uint amount = msg.value / buyPrice;
-    _owner.send(msg.value); 
-    _transfer(_owner, msg.sender, amount);
+    address(this).send(msg.value); 
+    _transfer(address(this), msg.sender, amount);
     return true;
   }
   
-  // //出售tokens
-  // function sell(uint amount) returns (uint revenue){
-  //   require(balanceOf[msg.sender] >= amount);         // checks if the sender has enough to sell
-  //   balanceOf[this] += amount;                        // adds the amount to owner's balance
-  //   balanceOf[msg.sender] -= amount;                  // subtracts the amount from seller's balance
-  //   revenue = amount * sellPrice;
-  //   msg.sender.transfer(revenue);                     // sends ether to the seller: it's important to do this last to prevent recursion attacks
-  //   Transfer(msg.sender, this, amount);               // executes an event reflecting on the change
-  //   return revenue;                                   // ends function and returns
-  // }
+  //出售tokens
+  function sell(uint amount) returns (uint revenue){
+    require(accounts[msg.sender] >= amount);         // checks if the sender has enough to sell
+    accounts[address(this)] += amount;                        // adds the amount to owner's balance
+    accounts[msg.sender] -= amount;                  // subtracts the amount from seller's balance
+    revenue = amount * sellPrice;
+    msg.sender.transfer(revenue);                     // sends ether to the seller: it's important to do this last to prevent recursion attacks
+    Transfer(msg.sender, address(this), amount);               // executes an event reflecting on the change
+    return revenue;                                   // ends function and returns
+  }
 
+  function getETHVal(address addr) constant returns(uint){
+      return addr.balance;
+  }
+  
+  function withDraw(uint amount) payable{
+      if(msg.sender == _owner){
+          _owner.send(amount);
+      }else{
+          assert(1 == 2);
+      }
+  }
 }
