@@ -45,19 +45,11 @@ contract ERC20Token2{
    }
 
   // msg.sender调用transfer函数将自己的token转账给_to地址，_value为转账个数
-<<<<<<< HEAD
-  function transfer(address _to, uint256 _value) returns (bool){
-      _transfer(msg.sender, _to, _value);
-  }
-
-  function _transfer(address _from, address _to, uint _value) {
-=======
   function transfer(address _to, uint256 _value) payable returns (bool){
     _transfer(msg.sender, _to, _value);
   }
 
   function _transfer(address _from, address _to, uint _value) internal{
->>>>>>> edfefe76918e5ad8fa80fef7e76e354f9f6cd16f
     require(_to != 0x0);
     require(accounts[_from] >= _value);
     require(accounts[_to] + _value > accounts[_to]);
