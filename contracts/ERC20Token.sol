@@ -1,6 +1,6 @@
 pragma solidity ^0.4.0;
 
-contract ERC20Token2{
+contract ERC20Token{
   string private _name = 'Wei Dongsheng';
   string private _symbol = 'WDS';
   uint8 private _decimals = 0;
@@ -56,7 +56,7 @@ contract ERC20Token2{
     uint previousBalances = accounts[_from] + accounts[_to];
     accounts[_from] -= _value;
     accounts[_to] += _value;
-    Transfer(_from, _to, _value);
+    emit Transfer(_from, _to, _value);
     assert(accounts[_from] + accounts[_to] == previousBalances);
   }
 
@@ -64,7 +64,7 @@ contract ERC20Token2{
   function buy() payable returns(bool){
     uint amount = msg.value / buyPrice;
     _owner.send(msg.value); 
-    _transfer(_owner, msg.sender, msg.value);
+    _transfer(_owner, msg.sender, amount);
     return true;
   }
   

@@ -11,12 +11,12 @@ contract CAstoreETH{
 
   //获得CA中的ETH余额
   function getBalance() constant returns (uint){
-    return this.balance;
+    return address(this).balance;
   }
 
   //EOA向CA充值
   function deposit() payable {  
-    address(this).send(msg.value);
+    address(this).transfer(msg.value);
     accounts[msg.sender] += msg.value;
   }
 }
