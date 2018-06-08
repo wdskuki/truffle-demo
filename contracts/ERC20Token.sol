@@ -61,13 +61,8 @@ contract ERC20Token2{
   }
 
   //购买tokens
-<<<<<<< HEAD
-  function _buy() payable returns(bool){
-    // uint amount = msg.value;
-=======
   function buy() payable returns(bool){
     uint amount = msg.value / buyPrice;
->>>>>>> edfefe76918e5ad8fa80fef7e76e354f9f6cd16f
     _owner.send(msg.value); 
     _transfer(_owner, msg.sender, msg.value);
     return true;
