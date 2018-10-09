@@ -9,7 +9,7 @@ contract SimpleDepositAndWithDraw {
     //得到当前合约的余额
     function getBalance() constant returns (uint) {
         return this.balance;//0
-    }  
+    }
 
     //向当前合约存款
     function deposit() payable {
@@ -18,7 +18,7 @@ contract SimpleDepositAndWithDraw {
         //send() 执行的结果
         address(this).send(msg.value);
     }
-    
+
     function withdraw(uint value) payable {
         if(owner == msg.sender){
             owner.send(value);
